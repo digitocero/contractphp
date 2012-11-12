@@ -1,0 +1,73 @@
+## CONTRACTPHP - a small php code contract library
+author: digitocero nuevo desarrollo web S.L.
+mail:jmejuto@digitocero.com
+license: New BSD license
+
+WARNING: this library is in an extremely inmature
+state. do not use in production (yet).
+
+## ---- RATIONALE ----
+php type system is not very advanced. Sometimes it is
+cumbersome to check for ranges of values or fields in arrays
+or objects. This library tries to alleviate this problem.
+
+This library can be seen as a fake type system on top of
+php.  It can also be regarded as a way to specify contracts on
+types.
+
+The values are checked at runtime.
+
+The library Defines two functions: _pre, _post
+Any error will break execution with the
+file and line information where the constrain is not
+fulfilled and a descriptive error.
+
+## ---- USAGE ----
+
+We define the types in a file types.php (see tests folder for examples)
+For example we define a type Customer with the following
+fields:
+
+$a['Customer'] = array(
+    'name' => ":string",
+    'phone' => ":int"
+);
+
+In our code we include the phpcontract.php file
+
+We use the _pre or _post functions to
+stablish the constraint.
+
+In the next example, the $data var is
+constrained to the Customer definition.
+
+<?php
+require_once(dirname(__FILE__)."/../phpcontract.php");
+
+function example($data) {
+    _pre('Customer',$data);
+}
+
+//tests
+//key literal
+    $data_ok = array(
+        'name' => "John"
+    );
+    $data_ko = array(
+        'anme' => "John"
+    );
+
+example($data_ok);
+?>
+
+## ---- TODO ----
+-more advanced contracts:
+    -more advanced definitions:
+        -ranges of values
+        -optional fields
+        -recusive definitions
+        -object contraints:
+            -inheritance
+-logging instead of breaking as an option
+-override _pre and _post function names
+-more tests and examples
